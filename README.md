@@ -1,6 +1,8 @@
 moers_haushalt_xml_zu_csv
 =========================
 
+quick'n'dirty nodejs script
+
 Konvertiert die Haushaltsdaten von Moers von XML zu CSV
 Quelle: http://www.moers.de/C1257221003C7526/html/B2DEA28118BBFC88C1257B0A0056F933?opendocument
 
