@@ -1,8 +1,6 @@
 moers_haushalt_xml_zu_csv
 =========================
 
-quick'n'dirty nodejs script
-
 Konvertiert die Haushaltsdaten von Moers von XML zu CSV
 Quelle: http://www.moers.de/C1257221003C7526/html/B2DEA28118BBFC88C1257B0A0056F933?opendocument
 
@@ -16,4 +14,10 @@ https://github.com/astro/moers-haushalt
 Erklärung
 =========
 
-Im script selber sind ein paar Konfigurationsmöglichkeiten ausserdem ist das XML Schema abgebildet, damit kann sich ein eigenes CSV Format erstellt werden
+Im script selber sind ein paar Konfigurationsmöglichkeiten ausserdem ist das XML Schema abgebildet, damit kann ein eigenes CSV Format erstellt werden
+
+
+script mit nodeJS starten:
+```
+convert.js
+```
