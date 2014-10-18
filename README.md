@@ -11,3 +11,9 @@ http://download.moers.de/Schule%20und%20Open%20Data/Problemskizze%20Projekt%20Op
 
 Hier noch die superkurz Variante, ein Einzeiler mit CURL:
 https://github.com/astro/moers-haushalt
+
+
+Erklärung
+=========
+
+Im script selber sind ein paar Konfigurationsmöglichkeiten ausserdem ist das XML Schema abgebildet, damit kann sich ein eigenes CSV Format erstellt werden
