@@ -19,5 +19,5 @@ Im script selber sind ein paar Konfigurationsmöglichkeiten ausserdem ist das XM
 
 script mit nodeJS starten:
 ```
-convert.js
+$ node convert.js
 ```
