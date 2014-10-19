@@ -11,21 +11,21 @@
                 +ueberschriften (param: ifp:lable="Überschriften")
                     +ueberschrift
                         +bezeichnung
-                +freitext1
-                +freitext2
-                +positionen
-                    +position
-                        <ANS_PLJ>
-                        <ANS_VJ>
-                        <PLAN_FJ1>
-                        <PLAN_FJ2>
-                        <PLAN_FJ3>
-                        <PLAN_FJ4>
-                        <RE_VVJ>
-                        <RE_VJ3>
-                        <ROW_NR>
-                        <ROW_TEXT> (ethält den Text zur Position, in den anderen Feldern sind die Werte)
-                        <TXTSONST/>
+                    +freitext1
+                    +freitext2
+                    +positionen
+                        +position
+                            <ANS_PLJ>
+                            <ANS_VJ>
+                            <PLAN_FJ1>
+                            <PLAN_FJ2>
+                            <PLAN_FJ3>
+                            <PLAN_FJ4>
+                            <RE_VVJ>
+                            <RE_VJ3>
+                            <ROW_NR>
+                            <ROW_TEXT> (ethält den Text zur Position, in den anderen Feldern sind die Werte)
+                            <TXTSONST/>
                 +investitionsmassnahmen
                     +investitionsmassnahme
                         +positionen>
@@ -78,14 +78,14 @@
  * EINSTELLUNGEN / CONFIG
  */
 var input_xml_path = './moers.xml';
-var output_csv_path = './moers.csv';
-var headline_seperator = '/';  // mehere Unterüberschriften werden damit optisch getrennt und zusammen in EIN Überschrift-Feld geschrieben
+var output_csv_path = './moers2.csv';
+var headline_seperator = ' / ';  // mehere Unterüberschriften werden damit optisch getrennt und zusammen in EIN Überschrift-Feld geschrieben
 var kopfzeile = ["id","typ","ueberschrift","kalk_position","ANS_PLJ","ANS_VJ","PLAN_FJ1","RE_VVJ"];
 
 /*
  * DateiObjet erzeugen, Datei einlesen
  * Cheerio (enthält den jQuery-Kern) laden
- * Dateiinhalt in CheerioObjct verandeln
+ * Dateiinhalt in CheerioObjekt verwandeln
  *
  */ 
 var fs = require('fs');
@@ -104,7 +104,6 @@ var id = 0;
 
 // durchläuft alle module mit Namen "modul" und steckt sie in ein gemeinsames Array
 $("module modul").each( function(mod_i,element) {
-        //csv_file_buffer += csv_line(this) + "\n\r";
         typ = get_type( this );
         hl = subheadlines_combined( this );
         pos = positions ( this ); 
@@ -114,66 +113,15 @@ $("module modul").each( function(mod_i,element) {
             csv_lines_array.push( [id, typ, hl, pos[i_pos]].join() );
             id++;
         }
-        
-        
-        //if(mod_i == 1) return false;
     });
 
 
 //Ausgabe zusammensetzen
 kopfzeile = kopfzeile.join() + "\n";
-//csv_file_buffer = kopfzeile + csv_file_buffer;
 csv_file_buffer = kopfzeile + csv_lines_array.join("\n");
 fs.writeFile(output_csv_path, csv_file_buffer);
 //console.log(csv_file_buffer);
 
-
-
-
-/*
- ***************** SUBFUNKTIONEN *****************
- */
-
-
-//easy try out
-    //console.log("Mandant Ort: %s", $("mandant ort").text());
-    //console.log("Mandant Bezeichnung: %s", $("mandant bezeichnung").text());
-    //console.log("Mandant Nummer: %s", $("mandant nr").text());
-    //var mod = $("modul");
-    //console.log("Anzahl der Module: %s", mod.length );
-    //pos = $("positionen position","*",mod[mod_i]).length; // alle Überschriften extrahieren
-    //console.log("positionen: %s", pos );
-
-
-/*
- * Baut jeweils eine Zeile fürs CSV auf
- */
-function csv_line( modul )
-{
-
-    var typ = $(modul).attr("typ"); // typ des aktuellen Moduls
-        typ = '"' +typ+ '"';
-    //var typ = $(this).attr("typ"); // typ des aktuellen Moduls
-    //console.log( "typ: "+typ );
-
-    //hl = $(this).children("ueberschriften").children().text(); // alle Überschriften in einen string extrahieren
-    //console.log( "überschrift %s", hl );
-
-    var hl = subheadlines_combined( modul );
-    var pos = positions ( modul , hl ).join("/"); 
-
-    //nur wenn mal alle Spalten leer sein sollten, wird die Zeile übersprungen
-    return ["id", typ , hl, pos].join();
-}
-
-
-/*
- * Gibt den bezeichnenden Typ des überladenen Moduls wieder 
- */
-function get_type( modul )
-{
-    return $(modul).attr("typ"); // typ des aktuellen Moduls
-}
 
 
 /*
@@ -186,6 +134,9 @@ function get_type( modul )
 function positions( modul )
 {
     var pos_arr = [];
+    if( $(modul).children("*").is("investitionsmassnahmen") )   // Um auch "investitionsmassnahmen" zu erfassen, wird der Knoten etwas tiefer gesetzt
+        modul = $(modul).children("investitionsmassnahmen").children("investitionsmassnahme");
+        
     modul = $(modul).children("positionen").children("position");
     modul.each(function(i,el){
         pos_arr.push (
@@ -196,10 +147,21 @@ function positions( modul )
             $(el).children("RE_VVJ").text() 
             );
         
-        })    
+        })
+
+
     return pos_arr; 
 }
 
+
+
+/*
+ * Gibt den bezeichnenden Typ des überladenen Moduls wieder 
+ */
+function get_type( modul )
+{
+    return $(modul).attr("typ"); // typ des aktuellen Moduls
+}
 
 
 
